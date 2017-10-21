@@ -77,7 +77,7 @@
 						var val = target - leader ;
 						var speed = val >0 ? Math.ceil(val/10) : Math.floor(val/10) ;
 						window.scrollTo(0,speed+leader) ;
-						if(target == leader){
+						if(Math.abs(val) <= Math.abs(speed)){
 							clearInterval(timer) ;
 						}
 				},20)
