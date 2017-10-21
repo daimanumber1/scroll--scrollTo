@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			body,html{
+				height: 100%;
+			}
+			ul{
+				list-style: none;
+				height: 100%;
+			}
+			ul li {
+				/*width: 100%;*/
+				height: 100%;
+			}
+			ol {
+				position: fixed;
+				left: 50px ;
+				top: 80px;
+				list-style: none;
+			}
+			ol li {
+				height: 50px;
+				width: 50px;
+				text-align: center;
+				line-height: 50px;
+				border: 1px solid black;
+				margin-top: -1px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<ul>
+			<li style="background: pink;">袜子区域</li>
+			<li style="background: blue;">帽子区域</li>
+			<li style="background: yellow;">鞋子区域</li>
+			<li style="background: red;">裤子区域</li>
+			<li	style="background: green;">包子区域</li>
+		</ul>
+		<ol>
+			<li style="background: pink;">袜子</li>
+			<li style="background: blue;">帽子</li>
+			<li style="background: yellow;">鞋子</li>
+			<li style="background: red;">裤子</li>
+			<li style="background: green;">包子</li>
+		</ol>
+		
+		<script type="text/javascript">
+			var ul = document.getElementsByTagName("ul")[0];
+			var uliArr = ul.children ;
+			var ol = document.getElementsByTagName("ol")[0];
+			var oliArr =ol.children ;
+			for(var i=0;  i<oliArr.length; i++){
+				oliArr[i].index = i ;
+				oliArr[i].onclick =function (){
+					var keys =this.index ;
+					console.log(uliArr[keys].offsetTop);
+					animateTo(uliArr[keys].offsetTop);
+				}
+			}
+			var leader =0 ; 
+			var timer ;
+			window.onscroll =function (){
+				var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop ;
+				leader =scrollTop ;
+			}
+			function animateTo(target){
+				clearInterval(timer) ;
+				timer =window.setInterval(function(){
+						var val = target - leader ;
+						var speed = val >0 ? Math.ceil(val/10) : Math.floor(val/10) ;
+						window.scrollTo(0,speed+leader) ;
+						if(target == leader){
+							clearInterval(timer) ;
+						}
+				},20)
+			}
+
+		</script>
+		
+		
+	</body>
+</html>
