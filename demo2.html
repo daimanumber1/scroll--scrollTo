@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			
+			.left{
+				width: 350px;
+				height: 350px;
+				border: 1px solid red;
+				position: relative;
+				left: 100px;
+				top: 100px;
+			}	
+			.right{
+				width: 400px;
+				height: 400px;
+				border: 1px solid red;
+				position: absolute;
+				left: 470px;
+				top: 100px;
+				overflow: hidden;
+			}
+			.inner {
+				width: 175px;
+				height: 175px;
+				background: rgba(255,255,0,0.4);
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				cursor: move;
+			}	
+			.right img{
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				/*border: 1px solid black;*/
+				
+			}	
+		</style>
+	</head>
+	<body>
+		<div class="left">
+			<img src="../img/001.jpg" height="100%"/>
+			<div class="inner">
+				
+			</div>
+		</div>
+		<div class="right">
+			<img src="../img/0001.jpg" />
+		</div>
+		
+		<script type="text/javascript">
+			var inner = document.getElementsByClassName("inner")[0];
+			var left = document.getElementsByClassName("left")[0];
+			var right = document.getElementsByClassName("right")[0]; 
+			var rImg = right.children[0];
+			//左侧黄色方块  随鼠标移动
+			left.onmousemove = function (event) {
+				inner.style.display = "block" ;
+				var event = event || window.event;
+				
+				var pagex = event.pageX || scrollLeft + event.clientX;
+				var pagey = event.pageY || scrollTop + event.clientY;
+				
+				var x = pagex - left.offsetLeft - inner.offsetWidth/2;
+				var y = pagey - left.offsetTop - inner.offsetHeight/2 ;
+				if( x <= 0 ) {
+					x = 0;
+				}
+				if( y <= 0 ){
+					y = 0;
+				}
+				if( x >= left.offsetWidth - inner.offsetWidth ){
+					x = left.offsetWidth - inner.offsetWidth;
+				}
+				if( y >= left.offsetHeight - inner.offsetHeight){
+					y = left.offsetHeight - inner.offsetHeight;
+				}
+				console.log(x);
+				console.log(y);
+				inner.style.left = x  + "px";
+				inner.style.top = y  + "px";
+				
+				rImg.style.left = -400/175*x + "px";
+				rImg.style.top = -400/175*y +"px";
+				
+			}
+			// 左侧黄色方块在移出时隐藏
+			left.onmouseout = function (){
+				inner.style.display ="none";
+			}
+			
+			
+			
+			
+			
+			window.onscroll = function () {
+				var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+				var scrollLeft =document.documentElement.scrollLeft || window.pageXOffset || document.body.scrollLeft;
+			}
+			
+		</script>
+	</body>
+</html>
