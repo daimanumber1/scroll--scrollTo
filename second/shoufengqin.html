@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.box {
+				width: 1150px;
+				height: 400px;
+				margin: 50px auto;
+				/*border: 1px solid red;*/
+			}
+			
+			ul {
+				width: 1300px;
+				list-style: none;
+			}
+			
+			li {
+				width: 240px;
+				height: 400px;
+				float: left;
+				/*border: 1px solid black;*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+
+		<script type="text/javascript">
+			var liArr = document.getElementsByTagName("li");
+			for(var i = 0; i < liArr.length; i++) {
+				liArr[i].index = i;
+				liArr[i].style.backgroundImage = "url(../img/" + (i + 1) + ".jpg)";
+				
+				
+				liArr[i].onmouseover = function(event) {
+					//					var event = event || window.event;
+					var bool = true;
+					for(var i = 0; i < liArr.length; i++) {
+						animate(liArr[i], 100);
+						if(liArr[i].style.width !== "100px") {
+							bool = false;
+						}
+					}
+					
+						animate(this, 800);
+
+				}
+			}
+
+			function animate(ele, target) {
+				clearInterval(ele.timer);
+				ele.timer = window.setInterval(function() {
+					var val = target - parseInt(finalStyle(ele,"width"));
+					var speed = val > 0 ? Math.ceil(val / 10) : Math.floor(val / 10);
+					ele.style.width = parseInt(finalStyle(ele,"width")) + speed + "px";
+					if(Math.abs(val) <= Math.abs(speed)) {
+						clearInterval(ele.timer);
+					}
+				}, 10)
+			}
+			
+			function finalStyle(ele,attr){
+				var f = ele.currentStyle ? ele.currentStyle : window.getComputedStyle(ele,null);
+				return f[attr];
+			}
+			
+		</script>
+
+	</body>
+
+</html>

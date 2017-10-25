@@ -10,6 +10,7 @@
 				height: 100px;
 				background: pink;
 				position: absolute;
+				top: 70px;
 			}
 		</style>
 	</head>
@@ -25,31 +26,50 @@
 
 			var box = document.getElementsByClassName("box")[0];
 			butt1.onclick = function() {
-				var json = {
-					"left": 100,
-					"top": 100,
-					"width": 200,
-					"height": 200
+				var json1 = {
+					"left": 200,
+					"top": 200,
+					"width": 300,
+					"height": 300
 				}
-				animate(box, json);
+				var json2 = {
+					"left": 10,
+					"top": 70,
+					"width": 100,
+					"height": 100
+				}
+				animate(box, json1,function(){
+					animate(box,json2,function(){
+						animate(box,json1);
+					})
+				});
 			}
 
-			function animate(ele, json) {
+			function animate(ele, json,fn) {
 				clearInterval(ele.timer);
+				
 				ele.timer = window.setInterval(function() {
+					var b = true;
 					for(var k in json) {
 						var target = json[k];
 						var val = target - parseInt(finalStyle(ele, k));
 						var speed = val >0 ? Math.ceil(val/10) : Math.floor(val/10); 
 //						console.log(speed);
 						ele.style[k] = parseInt(finalStyle(ele, k)) + speed + "px";
-						console.log(1);
-//						if(Math.abs(val) <= Math.abs(speed)) {
-//							
-////							ele.style[k] = target + "px";
-//							clearInterval(ele.timer);
-//						}
+//						
+						
+						if(val !== 0){
+							b = false;
+						}
+						console.log(2);
 					}
+					if(b){
+							console.log(1);
+							clearInterval(ele.timer);
+							if(fn){
+								fn();
+							}
+						}
 				}, 30)
 			}
 
