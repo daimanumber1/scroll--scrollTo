@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.box {
+				width: 1200px;
+				height: 500px;
+				margin: 5px auto;
+				position: relative;
+			}
+			
+			ul {
+				list-style: none;
+			}
+			
+			ul li {
+				position: absolute;
+				left: 200px;
+				top: 10px;
+			}
+			
+			img {
+				width: 100%;
+			}
+			
+			.prev {
+				position: absolute;
+				background: url(img/prev.png) no-repeat;
+				width: 76px;
+				height: 112px;
+				left: 20px;
+				top: 169px;
+				z-index: 99;
+			}
+			
+			.next {
+				position: absolute;
+				background: url(img/next.png) no-repeat;
+				width: 76px;
+				height: 112px;
+				right: 20px;
+				top: 169px;
+				z-index: 99;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+			<ul>
+				<li>
+					<a href="#"><img src="img/slidepic1.jpg" /></a>
+				</li>
+				<li>
+					<a href="#"><img src="img/slidepic2.jpg" /></a>
+				</li>
+				<li>
+					<a href="#"><img src="img/slidepic3.jpg" /></a>
+				</li>
+				<li>
+					<a href="#"><img src="img/slidepic4.jpg" /></a>
+				</li>
+				<li>
+					<a href="#"><img src="img/slidepic5.jpg" /></a>
+				</li>
+			</ul>
+			<div class="arrow">
+				<a class="prev" href="javascript:void(0)"></a>
+				<a class="next" href="javascript:void(0)"></a>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			var box = document.getElementsByClassName("box")[0];
+			var ul = document.getElementsByTagName("ul")[0];
+			var liArr = ul.children;
+			var prev = document.getElementsByClassName("prev")[0];
+			var next = document.getElementsByClassName("next")[0];
+			var json = [{
+					//0
+					"width": 800,
+					"top": 100,
+					"left": 200,
+					"opacity": 100,
+					"zIndex": 4
+				},
+				{
+					//1
+					"width": 600,
+					"top": 120,
+					"left": 600,
+					"opacity": 80,
+					"zIndex": 3
+				},
+				{
+					//2
+					"width": 400,
+					"top": 70,
+					"left": 750,
+					"opacity": 20,
+					"zIndex": 2
+				},
+				{
+					//3
+					"width": 400,
+					"top": 70,
+					"left": 50,
+					"opacity": 20,
+					"zIndex": 2
+				},
+				{
+					//4
+					"width": 600,
+					"top": 120,
+					"left": 0,
+					"opacity": 80,
+					"zIndex": 3
+				}
+			]
+
+			for(var i = 0; i < liArr.length; i++) {
+				animate(liArr[i], json[i]);
+			}
+
+			next.onclick = function() {
+				var last = json.pop();
+				json.unshift(last);
+
+				for(var i = 0; i < liArr.length; i++) {
+					animate(liArr[i], json[i]);
+				}
+			}
+			prev.onclick = function() {
+
+				var last = json.shift();
+				json.push(last);
+
+				for(var i = 0; i < liArr.length; i++) {
+					animate(liArr[i], json[i]);
+				}
+			}
+
+			function animate(ele, json, callback) {
+				clearInterval(ele.timer);
+				ele.timer = window.setInterval(function() {
+					var bool = true
+					for(var k in json) {
+						if(k === "opacity") {
+							var val = json[k] - finalStyle(ele, k) * 100;
+						} else {
+							var val = json[k] - parseInt(finalStyle(ele, k));
+						}
+						var speed = val > 0 ? Math.ceil(val / 10) : Math.floor(val / 10);
+						if(k === "opacity") {
+							ele.style[k] = (finalStyle(ele, k) * 100 + speed) / 100;
+
+						} else if(k === "zIndex") {
+							ele.style[k] = json[k];
+						} else {
+							ele.style[k] = parseInt(finalStyle(ele, k)) + speed + "px";
+						}
+
+						if(val !== finalStyle(ele, k)) {
+							bool = false;
+						}
+						if(bool) {
+							clearInterval(ele.timer);
+							if(callback) {
+								callback();
+							}
+						}
+					}
+				}, 8)
+			}
+
+			function finalStyle(ele, attr) {
+				var f = ele.currentStyle ? ele.currentStyle : window.getComputedStyle(ele, null);
+				return f[attr];
+			}
+		</script>
+
+	</body>
+
+</html>
